@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String
+  role      String   @default("admin") // admin, superadmin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  icon            String // Lucide icon name (e.g. Brain, Cloud, Shield)
+  slug            String   @unique
+  detailedContent String // Markdown/detailed description for details page
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  client      String
+  description String
+  metrics     String // E.g. "+150% Page Speed", "99.9% Uptime"
+  beforeAfter String? // E.g. "Before: Legacy Monolith | After: Serverless Next.js"
+  imageUrl    String // Image artifact or placeholder link
+  category    String // AI, Cloud, Software, Data
+  techUsed    String // Comma-separated or JSON list of tech
+  date        String // E.g. "Q2 2026"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Blog {
+  id          String   @id @default(uuid())
+  title       String
+  content     String // Blog post body (markdown)
+  slug        String   @unique
+  author      String
+  imageUrl    String
+  category    String // AI, Data, Industry, Cloud
+  publishDate DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  company   String
+  feedback  String
+  rating    Int      @default(5)
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Career {
+  id           String      @id @default(uuid())
+  title        String
+  department   String // Engineering, Consulting, Design
+  location     String // Remote, Hybrid (New York), etc.
+  description  String // Markdown job description
+  requirements String // Markdown bullet points
+  salaryRange  String? // E.g. "$120,000 - $150,000"
+  active       Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  applicants   Applicant[]
+}
+
+model Applicant {
+  id          String   @id @default(uuid())
+  name        String
+  email       String
+  phone       String?
+  coverLetter String?
+  resumeUrl   String?
+  jobId       String
+  job         Career   @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+}
+
+model ContactMessage {
+  id               String   @id @default(uuid())
+  name             String
+  email            String
+  company          String?
+  serviceRequested String?
+  message          String
+  status           String   @default("NEW") // NEW, CONTACTED, ARCHIVED
+  createdAt        DateTime @default(now())
+}
+
+model Newsletter {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model AnalyticsLog {
+  id        String   @id @default(uuid())
+  pageName  String
+  eventType String // pageview, click, lead_conversion
+  timestamp DateTime @default(now())
+}
