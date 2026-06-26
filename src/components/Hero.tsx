@@ -14,20 +14,41 @@ export default function Hero() {
   const springX = useSpring(mouseX, { damping: 40, stiffness: 200 });
   const springY = useSpring(mouseY, { damping: 40, stiffness: 200 });
   
-  // Transform glowing blob positions
-  const glowX = useTransform(springX, (val) => `${val - 250}px`);
-  const glowY = useTransform(springY, (val) => `${val - 250}px`);
+  // Transform glowing blob positions (numbers default to px transforms in framer-motion)
+  const glowX = useTransform(springX, (val) => val - 250);
+  const glowY = useTransform(springY, (val) => val - 250);
 
   useEffect(() => {
+    let rect = containerRef.current?.getBoundingClientRect();
+
+    const updateRect = () => {
+      if (containerRef.current) {
+        rect = containerRef.current.getBoundingClientRect();
+      }
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
+      if (!rect) updateRect();
+      if (!rect) return;
       mouseX.set(e.clientX - rect.left);
       mouseY.set(e.clientY - rect.top);
     };
+
+    const handleScrollOrResize = () => {
+      updateRect();
+    };
     
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("resize", handleScrollOrResize);
+    window.addEventListener("scroll", handleScrollOrResize, { passive: true });
+    
+    updateRect();
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", handleScrollOrResize);
+      window.removeEventListener("scroll", handleScrollOrResize);
+    };
   }, [mouseX, mouseY]);
 
   return (
@@ -43,8 +64,8 @@ export default function Hero() {
       <motion.div 
         className="absolute w-[500px] h-[500px] rounded-full bg-secondary/5 blur-[120px] pointer-events-none mix-blend-multiply"
         style={{
-          left: glowX,
-          top: glowY,
+          x: glowX,
+          y: glowY,
         }}
       />
 

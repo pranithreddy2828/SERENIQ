@@ -119,6 +119,7 @@ body {
 
 .animate-infinite-scroll {
   animation: infinite-scroll 35s linear infinite;
+  will-change: transform;
 }
 
 .animate-infinite-scroll:hover {

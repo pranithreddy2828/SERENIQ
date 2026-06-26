@@ -40,15 +40,18 @@ export default function CustomCursor() {
       const interactive = target.closest("a, button, [role='button'], .cursor-pointer");
       const projectCard = target.closest(".project-card-interactive");
 
-      if (projectCard) {
-        setHovered(true);
-        setCursorText("VIEW");
-      } else if (interactive) {
-        setHovered(true);
-        setCursorText("");
+      const isProjectCard = !!projectCard;
+      const isInteractive = !projectCard && !!interactive;
+
+      if (isProjectCard) {
+        setHovered((prev) => (prev ? prev : true));
+        setCursorText((prev) => (prev === "VIEW" ? prev : "VIEW"));
+      } else if (isInteractive) {
+        setHovered((prev) => (prev ? prev : true));
+        setCursorText((prev) => (prev === "" ? prev : ""));
       } else {
-        setHovered(false);
-        setCursorText("");
+        setHovered((prev) => (!prev ? prev : false));
+        setCursorText((prev) => (prev === "" ? prev : ""));
       }
     };
 
@@ -82,6 +85,7 @@ export default function CustomCursor() {
           y: cursorYSpring,
           translateX: "-50%",
           translateY: "-50%",
+          willChange: "transform",
         }}
         animate={{
           scale: hovered ? 1.8 : 1,
@@ -104,6 +108,7 @@ export default function CustomCursor() {
           y: cursorYSpring,
           translateX: "-50%",
           translateY: "-50%",
+          willChange: "transform",
         }}
         animate={{
           scale: hovered ? 0 : 1,
