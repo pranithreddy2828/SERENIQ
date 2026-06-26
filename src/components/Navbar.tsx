@@ -60,6 +60,7 @@ export default function Navbar() {
                     href={link.href}
                     onMouseEnter={() => setHoveredLink(link.name)}
                     onMouseLeave={() => setHoveredLink(null)}
+                    onClick={() => setHoveredLink(null)}
                     className={`relative text-xs font-semibold px-4 py-2 rounded-full transition-colors duration-200 ${
                       isActive ? "text-secondary font-bold" : "text-slate-655 hover:text-slate-900"
                     }`}

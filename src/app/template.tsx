@@ -35,8 +35,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
             const hrefAttr = anchor.getAttribute("href") || "";
             const isHashOnly = hrefAttr.startsWith("#") || (hrefAttr.includes("#") && hrefAttr.split("#")[0] === "");
             const isSamePageHash = targetUrl.pathname === window.location.pathname && targetUrl.hash !== "";
+            const isSamePage = targetUrl.pathname === window.location.pathname &&
+                               targetUrl.search === window.location.search &&
+                               targetUrl.hash === window.location.hash;
 
-            if (isDownload || isBlank || isHashOnly || isSamePageHash) {
+            if (isDownload || isBlank || isHashOnly || isSamePageHash || isSamePage) {
               return;
             }
 
