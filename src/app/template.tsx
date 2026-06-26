@@ -11,13 +11,41 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [isExiting, setIsExiting] = useState(false);
   const [isEntering, setIsEntering] = useState(true);
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
+  const [pendingTabName, setPendingTabName] = useState<string | null>(null);
 
   // Reset exit transition states when pathname changes
   useEffect(() => {
     setIsExiting(false);
     setIsEntering(true);
     setPendingUrl(null);
+    setPendingTabName(null);
   }, [pathname]);
+
+  const getTabNameFromPath = (path: string) => {
+    switch (path) {
+      case "/":
+        return "Home";
+      case "/outsourcing":
+        return "Outsourcing";
+      case "/hire-recruiter":
+        return "Hire Recruiter";
+      case "/services":
+        return "Services";
+      case "/industries":
+        return "Industries";
+      case "/careers":
+        return "Careers";
+      default:
+        const segment = path.split("/")[1];
+        if (!segment) return "Home";
+        return segment
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+    }
+  };
+
+  const currentTabName = isExiting ? (pendingTabName || "Loading") : getTabNameFromPath(pathname);
 
   // Intercept local navigations to run transition animations
   useEffect(() => {
@@ -46,9 +74,18 @@ export default function Template({ children }: { children: React.ReactNode }) {
             e.preventDefault();
             const href = targetUrl.pathname + targetUrl.search + targetUrl.hash;
             
+            // Extract and clean tab name
+            let tabName = anchor.innerText?.trim() || anchor.textContent?.trim() || "";
+            // Remove any arrow icons from the text (e.g. ↗ or arrow characters)
+            tabName = tabName.replace(/[↗→]/g, "").trim();
+            if (tabName.toUpperCase().includes("SERENIQ") || href === "/" || href === "") {
+              tabName = "Home";
+            }
+            
             // Trigger exit animation
             setIsExiting(true);
             setPendingUrl(href);
+            setPendingTabName(tabName);
           }
         } catch (err) {
           // Ignore invalid URL parse errors
@@ -60,14 +97,14 @@ export default function Template({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener("click", handleAnchorClick);
   }, []);
 
-  // Perform route change after exit animation completes (400ms)
+  // Perform route change after exit animation completes (750ms)
   useEffect(() => {
     if (isExiting && pendingUrl) {
       const timer = setTimeout(() => {
         startTransition(() => {
           router.push(pendingUrl);
         });
-      }, 400);
+      }, 750);
       return () => clearTimeout(timer);
     }
   }, [isExiting, pendingUrl, router]);
@@ -77,7 +114,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <motion.div
         initial={{ opacity: 0.8, scale: 0.99 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="flex-grow flex flex-col w-full"
       >
         {children}
@@ -89,7 +126,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
           initial={isExiting ? { y: "100%" } : { y: "0%" }}
           animate={isExiting ? { y: "0%" } : { y: "-100%" }}
           exit={isExiting ? { y: "0%" } : { y: "-100%" }}
-          transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
           onAnimationComplete={() => {
             if (!isExiting) {
               setIsEntering(false);
@@ -98,7 +135,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
           className="fixed inset-0 z-50 bg-[#2563eb] flex items-center justify-center pointer-events-none"
         >
           {/* Centered logo/telemetry loader */}
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center text-center">
             <motion.h2
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -107,7 +144,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
             >
               SEREN<span className="text-cyan-300">IQ</span>
             </motion.h2>
-            <div className="w-16 h-0.5 bg-white/20 mt-4 overflow-hidden rounded-full relative">
+            <div className="w-16 h-0.5 bg-white/20 mt-4 mb-4 overflow-hidden rounded-full relative">
               <motion.div
                 initial={{ left: "-100%" }}
                 animate={{ left: "100%" }}
@@ -115,6 +152,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
                 className="absolute top-0 bottom-0 w-8 bg-cyan-300"
               />
             </div>
+            {/* Dynamic tab name text */}
+            <motion.span
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.25 }}
+              className="text-sm sm:text-base md:text-lg font-extrabold uppercase tracking-[0.2em] text-cyan-200 animate-pulse drop-shadow-[0_2px_8px_rgba(34,211,238,0.25)]"
+            >
+              {currentTabName}
+            </motion.span>
           </div>
         </motion.div>
       )}
