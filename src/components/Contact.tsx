@@ -174,8 +174,8 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Email</h4>
-                  <a href="mailto:solutions@sereniq.com" className="text-xs sm:text-sm font-semibold text-slate-800 mt-1 hover:text-secondary hover:underline break-all">
-                    solutions@sereniq.com
+                  <a href="mailto:Hr@sereniqinfo.com" className="text-xs sm:text-sm font-semibold text-slate-800 mt-1 hover:text-secondary hover:underline break-all">
+                    Hr@sereniqinfo.com
                   </a>
                 </div>
               </div>
@@ -186,8 +186,8 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Phone</h4>
-                  <a href="tel:+18005550199" className="text-xs sm:text-sm font-semibold text-slate-800 mt-1 hover:text-secondary hover:underline">
-                    +1 (800) 555-0199
+                  <a href="tel:+917824894408" className="text-xs sm:text-sm font-semibold text-slate-800 mt-1 hover:text-secondary hover:underline">
+                    +91 7824894408
                   </a>
                 </div>
               </div>
