@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
 import Careers from "@/components/Careers";
 import { UserCheck, Compass, GraduationCap, ClipboardCopy, HelpCircle, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
@@ -190,7 +189,7 @@ export default function CareersPage() {
           <div className="max-w-5xl mx-auto px-6 text-center relative z-10 flex flex-col items-center gap-6">
             <h2 className="text-3xl font-bold tracking-tight font-sans text-slate-955">Ready to Build With Us?</h2>
             <p className="text-slate-600 text-sm max-w-xl leading-relaxed font-normal">
-              Scroll up to explore our active engineering vacancies. Click "Apply Now" to file your credentials directly to our team!
+              Scroll up to explore our active engineering vacancies. Click &quot;Apply Now&quot; to file your credentials directly to our team!
             </p>
             <a
               href="#careers"

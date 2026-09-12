@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
 import Services from "@/components/Services";
 import { Layers, Cpu, Code2, Server, HelpCircle, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";

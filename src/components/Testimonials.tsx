@@ -82,7 +82,7 @@ export default function Testimonials() {
 
                 {/* Quote Text */}
                 <p className="text-base sm:text-lg font-normal italic leading-relaxed text-slate-700 mb-8 font-sans">
-                  "{testimonials[current].quote}"
+                  &quot;{testimonials[current].quote}&quot;
                 </p>
 
                 {/* Reviewer Details */}

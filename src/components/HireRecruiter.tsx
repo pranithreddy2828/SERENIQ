@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { UserCheck, Award, TrendingUp, BarChart2 } from "lucide-react";
 
 export default function HireRecruiter() {

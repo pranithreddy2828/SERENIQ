@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
 import Outsourcing from "@/components/Outsourcing";
 import { Cpu, Shield, Globe, Award, HelpCircle, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
@@ -98,7 +97,7 @@ export default function OutsourcingPage() {
                   desc: "Continuous software delivery managed via bi-weekly sprint reviews and code-quality checks.",
                   icon: <Award className="w-5 h-5 text-secondary" />,
                 },
-              ].map((item, idx) => (
+              ].map((item) => (
                 <div key={item.step} className="light-glass-card p-6 rounded-xl relative z-10 flex flex-col justify-between group">
                   <div>
                     <div className="flex items-center justify-between mb-4">

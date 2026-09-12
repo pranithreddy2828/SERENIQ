@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
 import Industries from "@/components/Industries";
 import { HeartPulse, Banknote, ShoppingBag, ShieldAlert, HelpCircle, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";

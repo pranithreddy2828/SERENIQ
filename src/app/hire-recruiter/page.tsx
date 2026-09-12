@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
 import HireRecruiter from "@/components/HireRecruiter";
 import { UserCheck, Search, Users, Award, HelpCircle, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";

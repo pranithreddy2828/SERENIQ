@@ -67,10 +67,18 @@ export default function CustomCursor() {
   }, [cursorX, cursorY, visible]);
 
   // Don't render cursor on mobile devices
-  const [isMobile, setIsMobile] = useState(true);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  });
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-    setIsMobile(!mediaQuery.matches);
+    const handleMediaChange = (e: MediaQueryListEvent) => {
+      setIsMobile(!e.matches);
+    };
+    mediaQuery.addEventListener("change", handleMediaChange);
+    return () => mediaQuery.removeEventListener("change", handleMediaChange);
   }, []);
 
   if (isMobile || !visible) return null;

@@ -7,19 +7,21 @@ import { useEffect, useState, useTransition } from "react";
 export default function Template({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
+  const [prevPathname, setPrevPathname] = useState(pathname);
   const [isExiting, setIsExiting] = useState(false);
   const [isEntering, setIsEntering] = useState(true);
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
   const [pendingTabName, setPendingTabName] = useState<string | null>(null);
 
   // Reset exit transition states when pathname changes
-  useEffect(() => {
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setIsExiting(false);
     setIsEntering(true);
     setPendingUrl(null);
     setPendingTabName(null);
-  }, [pathname]);
+  }
 
   const getTabNameFromPath = (path: string) => {
     switch (path) {
@@ -87,7 +89,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
             setPendingUrl(href);
             setPendingTabName(tabName);
           }
-        } catch (err) {
+        } catch {
           // Ignore invalid URL parse errors
         }
       }
